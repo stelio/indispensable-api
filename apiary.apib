@@ -1,0 +1,403 @@
+FORMAT: 1A
+HOST: http://api.indispensable.undertheinfluence.co.za
+
+# Indispensable API Documentation
+
+Indispensable API is based on REST principles. You have to be authenticated and call the simple HTTPs request on the URL specified below. The following documentation covers core resources that are used to manipulate with the main entities. First of all, read basic instructions to start using the API.
+
+Date | Version | Description
+--- | --- | ---
+2014-02-07 | 1.1 | Inital API; Get Device Configuration only
+2014-03-14 | 1.2 | Added Pours Collection
+2014-03-31 | 1.3 | Added Bags Collection
+2014-04-03 | 1.4 | Added Logs Collection; Various other fixes
+2014-04-08 | 1.5 | Added lines 5 and 6 to device configuration JSON
+
+#Allowed HTTPs requests:
+* `POST` - To create or update resource
+* `PUT` - To create or update resource
+* `GET` - Get a resource or list of resources
+* `DELETE` - To delete resource
+
+#Description Of Usual Server Responses
+* 200 `OK` - the request was successful (some API calls may return 201 instead).
+* 201 `Created` - the request was successful and a resource was created.
+* 204 `No Content` - the request was successful but there is no representation to return (i.e. the response is empty).
+* 400 `Bad Request` - the request could not be understood or was missing required parameters.
+* 401 `Unauthorized` - authentication failed or user doesn't have permissions for requested operation.
+* 403 `Forbidden` - access denied.
+* 404 `Not Found` - resource was not found.
+* 405 `Method Not Allowed` - requested method is not supported for resource.
+
+#JSON convension used
+Please see https://google-styleguide.googlecode.com/svn/trunk/jsoncstyleguide.xml
+
+# Group CSV file formats
+
+Logs API accepts data in CSV files according to these conditions:
+
+* CSV file format: [http://tools.ietf.org/html/rfc4180]
+    * Compatible with CSV exports from OpenOffice Cals, MS Excel, Google Drive
+    * Delimiter and enclosure can be specified by parameter, defaults are comma and doublequote
+    * Enclosure is escaped by preceding it with another enclosure character
+    * Header row is required
+    * Optionally escape character can be specified for escaping new lines, tabs and other special character. By default no escape character is set.
+* Supported line breaks
+    * Unix (\n)
+* Uncompressed
+* File encoding: UTF-8
+
+##Example of source data saved into CSV file
+    MACAddress,IMEINumber,pourDatetime,pourLine,pourSize,pourTemperature
+    00-11-22-33-44,0123456789012345,2014-03-14 00:00:00,1,100,19
+
+# Group Configuration
+Get the system wide configuration information.
+Some elements of the API require some knowledge of this configuration data. The purpose of this is to try and keep the actual API responses as light as possible. It is recommended you cache this data within your application and check for updates every few days.
+This method currently holds the data relevant to building URLs.
+
+###Pour Modes
+Value | Mode
+--- | ---
+pourSize < 0 | free pour. e.g. -1 is free pour
+pourSize = 0 | disabled or no pour
+pourSize > 0 | the volumetric measurement to pour
+
+## Get Device Configuration [/configuration/{type}/{identity}/]
+### Get Device Configuration [GET]
++ Parameters
+    + type (required, string, `MACAddress`) ... `` of the Device. Example 'MACAddress' or 'IMEINumber'
+    + identity (required, string, `00-11-22-33-44`) ... `` of the Device. Example '00-11-22-33-44' or '0123456789012345'
+
++ Response 200 (application/json)
+
+        [{ "batchUploadDatetime" : "2014-02-07 02:00:00",
+          "pourLines" : [ { "id" : "1",
+                "rotarySelector" : { "positions" : [ { "id" : "1",
+                          "pourSize" : "50"
+                        },
+                        { "id" : "2",
+                          "pourSize" : "100"
+                        },
+                        { "id" : "3",
+                          "pourSize" : "150"
+                        },
+                        { "id" : "4",
+                          "pourSize" : "200"
+                        }
+                      ] },
+                "title" : "Line 1"
+              },
+              { "id" : "2",
+                "rotarySelector" : { "positions" : [ { "id" : "1",
+                          "pourSize" : "250"
+                        },
+                        { "id" : "2",
+                          "pourSize" : "300"
+                        },
+                        { "id" : "3",
+                          "pourSize" : "350"
+                        },
+                        { "id" : "4",
+                          "pourSize" : "400"
+                        }
+                      ] },
+                "title" : "Line 2"
+              },
+              { "id" : "3",
+                "rotarySelector" : { "positions" : [ { "id" : "1",
+                          "pourSize" : "450"
+                        },
+                        { "id" : "2",
+                          "pourSize" : "500"
+                        },
+                        { "id" : "3",
+                          "pourSize" : "550"
+                        },
+                        { "id" : "4",
+                          "pourSize" : "600"
+                        }
+                      ] },
+                "title" : "Line 3"
+              },
+              { "id" : "4",
+                "rotarySelector" : { "positions" : [ { "id" : "1",
+                          "pourSize" : "650"
+                        },
+                        { "id" : "2",
+                          "pourSize" : "700"
+                        },
+                        { "id" : "3",
+                          "pourSize" : "750"
+                        },
+                        { "id" : "4",
+                          "pourSize" : "800"
+                        }
+                      ] },
+                "title" : "Line 4"
+              },
+              { "id" : "5",
+                "rotarySelector" : { "positions" : [ { "id" : "1",
+                          "pourSize" : "850"
+                        },
+                        { "id" : "2",
+                          "pourSize" : "900"
+                        },
+                        { "id" : "3",
+                          "pourSize" : "950"
+                        },
+                        { "id" : "4",
+                          "pourSize" : "1000"
+                        }
+                      ] },
+                "title" : "Line 5"
+              },
+              { "id" : "6",
+                "rotarySelector" : { "positions" : [ { "id" : "1",
+                          "pourSize" : "1050"
+                        },
+                        { "id" : "2",
+                          "pourSize" : "1100"
+                        },
+                        { "id" : "3",
+                          "pourSize" : "1150"
+                        },
+                        { "id" : "4",
+                          "pourSize" : "1200"
+                        }
+                      ] },
+                "title" : "Line 6"
+              }
+            ],
+          "serverURL" : "indispensable.apiary.io"
+        }]
+
+# Group Pours
+Pours related resources of the **Pours API**
+
+## Pours Collection [/pours]
+### Create a Pour [POST]
+
+- MACAddress (required, string, `00-11-22-33-44`) ... `` of the Pour to perform action with.
+- IMEINumber (required, string, `0123456789012345`) ... `` of the Pour to perform action with.
+- pourDatetime (required, string, `2014-03-14 00:00:00`) ... `` through which the pour was performed.
+- pourLine (required, string, `1`) ... `` through which the Pour was performed.
+- pourSize (required, string, `100`) ... `` volumetric measurement in milliliters.
+- pourTemperature (required, string, `19`) ... `` of the Pour.
+
++ Request (application/json)
+
+    + Parameters
+            + MACAddress (required, string, `00-11-22-33-44`) ... `` of the Pour to perform action with.
+            + IMEINumber (required, string, `0123456789012345`) ... `` of the Pour to perform action with.
+            + pourDatetime (required, string, `2014-03-14 00:00:00`) ... `` through which the pour was performed.
+            + pourLine (required, string, `1`) ... `` through which the Pour was performed.
+            + pourSize (required, string, `100`) ... `` volumetric measurement in milliliters.
+            + pourTemperature (required, string, `19`) ... `` of the Pour.
+
+    + Body
+
+            {
+                "MACAddress" : "00-11-22-33-44:55",
+                "IMEINumber" : "0123456789012345",
+                "pourDatetime" : "2014-03-14 00:00:00",
+                "pourLine" : "1",
+                "pourSize" : "100",
+                "pourTemperature" : "19"
+            }
+
++ Response 201 (application/json)
+
+        [{ "batchUploadDatetime" : "2014-02-07 02:00:00",
+          "pourLines" : [ { "id" : "1",
+                "rotarySelector" : { "positions" : [ { "id" : "1",
+                          "pourSize" : "50"
+                        },
+                        { "id" : "2",
+                          "pourSize" : "100"
+                        },
+                        { "id" : "3",
+                          "pourSize" : "150"
+                        },
+                        { "id" : "4",
+                          "pourSize" : "200"
+                        }
+                      ] },
+                "title" : "Line 1"
+              },
+              { "id" : "2",
+                "rotarySelector" : { "positions" : [ { "id" : "1",
+                          "pourSize" : "250"
+                        },
+                        { "id" : "2",
+                          "pourSize" : "300"
+                        },
+                        { "id" : "3",
+                          "pourSize" : "350"
+                        },
+                        { "id" : "4",
+                          "pourSize" : "400"
+                        }
+                      ] },
+                "title" : "Line 2"
+              },
+              { "id" : "3",
+                "rotarySelector" : { "positions" : [ { "id" : "1",
+                          "pourSize" : "450"
+                        },
+                        { "id" : "2",
+                          "pourSize" : "500"
+                        },
+                        { "id" : "3",
+                          "pourSize" : "550"
+                        },
+                        { "id" : "4",
+                          "pourSize" : "600"
+                        }
+                      ] },
+                "title" : "Line 3"
+              },
+              { "id" : "4",
+                "rotarySelector" : { "positions" : [ { "id" : "1",
+                          "pourSize" : "650"
+                        },
+                        { "id" : "2",
+                          "pourSize" : "700"
+                        },
+                        { "id" : "3",
+                          "pourSize" : "750"
+                        },
+                        { "id" : "4",
+                          "pourSize" : "800"
+                        }
+                      ] },
+                "title" : "Line 4"
+              },
+              { "id" : "5",
+                "rotarySelector" : { "positions" : [ { "id" : "1",
+                          "pourSize" : "850"
+                        },
+                        { "id" : "2",
+                          "pourSize" : "900"
+                        },
+                        { "id" : "3",
+                          "pourSize" : "950"
+                        },
+                        { "id" : "4",
+                          "pourSize" : "1000"
+                        }
+                      ] },
+                "title" : "Line 5"
+              },
+              { "id" : "6",
+                "rotarySelector" : { "positions" : [ { "id" : "1",
+                          "pourSize" : "1050"
+                        },
+                        { "id" : "2",
+                          "pourSize" : "1100"
+                        },
+                        { "id" : "3",
+                          "pourSize" : "1150"
+                        },
+                        { "id" : "4",
+                          "pourSize" : "1200"
+                        }
+                      ] },
+                "title" : "Line 6"
+              }
+            ],
+          "serverURL" : "indispensable.apiary.io",
+          "result": "success"
+        }]
+        
++ Response 400
+        
+        {
+            "message" : "MACAddress or IMEINumber not specified."
+        }
+
+# Group Bags
+Bags related resources of the **Bags API**
+
+## Bags Collection [/bags]
+### Create/Update Bag [POST]
+
+- MACAddress (required, string, `00-11-22-33-44`) ... `` of which the bag action was performed.
+- IMEINumber (required, string, `0123456789012345`) ... `` of which the bag action was performed.
+- bagDatetime (required, string, `2014-03-31 00:00:00`) ... `` through which the bag action was performed.
+- bagLine (required, string, `1`) ... `` through which the bag action was performed.
+- bagState (required, string, `empty`) ... `` bag state.
+
++ Request (application/json)
+
+        {
+            "MACAddress" : "00-11-22-33-44:55",
+            "IMEINumber" : "0123456789012345",
+            "bagDatetime" : "2014-03-31 00:00:00",
+            "bagLine" : "1",
+            "bagState" : "empty"
+        }
+
++ Response 201 (application/json)
+
+        {
+          "result": "success"
+        }
+        
+# Group Logs
+Logs related resources of the **Logs API**
+        
+## Logs Collection [/logs]
+### Create Log [POST]
+
+Imports data from csv file to prepared table
+
+CSV table should contain header with column names, all columns present in table must be also present in CSV file, new columns not present in table are created.
+Read more about required CSV format.
+
+### CURL Test
+    curl --form MACAddress=00-11-22-33-44 --form IMEINumber=0123456789012345 --form logDate=2014-03-31 --form logData=@sample.csv http://indispensable.apiary-mock.com/logs
+
+#Parameters
+
+- MACAddress (required, string, `00-11-22-33-44`) ... `` of the Log.
+- IMEINumber (required, string, `0123456789012345`) ... `` of the Log.
+- logDate (required, string, `2014-03-31`) ... `` of the Log.
+- logData (required, file) ... `` CSV file containing data for import.
+
++ Request
+    + Headers
+
+            Content-Type: multipart/form-data;
+    
+    + Body
+            
+            ------------------------------892378f8a959
+            Content-Disposition: form-data; name="MACAddress"
+            
+            00-11-22-33-44
+            ------------------------------892378f8a959
+            Content-Disposition: form-data; name="IMEINumber"
+            
+            0123456789012345
+            ------------------------------892378f8a959
+            Content-Disposition: form-data; name="logDate"
+            
+            2014-03-31
+            ------------------------------892378f8a959
+            Content-Disposition: form-data; name="logData"; filename="sample.csv"
+            Content-Type: application/octet-stream
+            
+            MACAddress,IMEINumber,pourDatetime,pourLine,pourSize,pourTemperature
+            00-11-22-33-44,0123456789012345,2014-04-03 12:00:00,1,100,19
+            00-11-22-33-44,0123456789012345,2014-04-03 13:00:00,1,150,20
+            00-11-22-33-44,0123456789012345,2014-04-03 14:00:00,1,200,21
+            
+            ------------------------------892378f8a959--
+
++ Response 201 (application/json)
+
+        {
+          "result": "success"
+        }
+
