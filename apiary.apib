@@ -49,7 +49,7 @@ Logs API accepts data in CSV files according to these conditions:
 
 ##Example of source data saved into CSV file
     MACAddress,IMEINumber,pourDatetime,pourLine,pourSize,pourTemperature
-    00-11-22-33-44,0123456789012345,2014-03-14 00:00:00,1,100,19
+    00-11-22-33-44-55,0123456789012345,2014-03-14 00:00:00,1,100,19
 
 # Group Configuration
 Get the system wide configuration information.
@@ -67,7 +67,7 @@ pourSize > 0 | the volumetric measurement to pour
 ### Get Device Configuration [GET]
 + Parameters
     + type (required, string, `MACAddress`) ... `` of the Device. Example 'MACAddress' or 'IMEINumber'
-    + identity (required, string, `00-11-22-33-44`) ... `` of the Device. Example '00-11-22-33-44' or '0123456789012345'
+    + identity (required, string, `00-11-22-33-44-55`) ... `` of the Device. Example '00-11-22-33-44-55' or '0123456789012345'
 
 + Response 200 (application/json)
 
@@ -178,7 +178,7 @@ Pours related resources of the **Pours API**
 ## Pours Collection [/pours]
 ### Create a Pour [POST]
 
-- MACAddress (required, string, `00-11-22-33-44`) ... `` of the Pour to perform action with.
+- MACAddress (required, string, `00-11-22-33-44-55`) ... `` of the Pour to perform action with.
 - IMEINumber (required, string, `0123456789012345`) ... `` of the Pour to perform action with.
 - pourDatetime (required, string, `2014-03-14 00:00:00`) ... `` through which the pour was performed.
 - pourLine (required, string, `1`) ... `` through which the Pour was performed.
@@ -188,7 +188,7 @@ Pours related resources of the **Pours API**
 + Request (application/json)
 
     + Parameters
-            + MACAddress (required, string, `00-11-22-33-44`) ... `` of the Pour to perform action with.
+            + MACAddress (required, string, `00-11-22-33-44-55`) ... `` of the Pour to perform action with.
             + IMEINumber (required, string, `0123456789012345`) ... `` of the Pour to perform action with.
             + pourDatetime (required, string, `2014-03-14 00:00:00`) ... `` through which the pour was performed.
             + pourLine (required, string, `1`) ... `` through which the Pour was performed.
@@ -322,7 +322,7 @@ Bags related resources of the **Bags API**
 ## Bags Collection [/bags]
 ### Create/Update Bag [POST]
 
-- MACAddress (required, string, `00-11-22-33-44`) ... `` of which the bag action was performed.
+- MACAddress (required, string, `00-11-22-33-44-55`) ... `` of which the bag action was performed.
 - IMEINumber (required, string, `0123456789012345`) ... `` of which the bag action was performed.
 - bagDatetime (required, string, `2014-03-31 00:00:00`) ... `` through which the bag action was performed.
 - bagLine (required, string, `1`) ... `` through which the bag action was performed.
@@ -356,11 +356,11 @@ CSV table should contain header with column names, all columns present in table 
 Read more about required CSV format.
 
 ### CURL Test
-    curl --form MACAddress=00-11-22-33-44 --form IMEINumber=0123456789012345 --form logDate=2014-03-31 --form logData=@sample.csv http://indispensable.apiary-mock.com/logs
+    curl --form MACAddress=00-11-22-33-44-55 --form IMEINumber=0123456789012345 --form logDate=2014-03-31 --form logData=@sample.csv http://indispensable.apiary-mock.com/logs
 
 #Parameters
 
-- MACAddress (required, string, `00-11-22-33-44`) ... `` of the Log.
+- MACAddress (required, string, `00-11-22-33-44-55`) ... `` of the Log.
 - IMEINumber (required, string, `0123456789012345`) ... `` of the Log.
 - logDate (required, string, `2014-03-31`) ... `` of the Log.
 - logData (required, file) ... `` CSV file containing data for import.
@@ -375,7 +375,7 @@ Read more about required CSV format.
             ------------------------------892378f8a959
             Content-Disposition: form-data; name="MACAddress"
             
-            00-11-22-33-44
+            00-11-22-33-44-55
             ------------------------------892378f8a959
             Content-Disposition: form-data; name="IMEINumber"
             
@@ -389,9 +389,9 @@ Read more about required CSV format.
             Content-Type: application/octet-stream
             
             MACAddress,IMEINumber,pourDatetime,pourLine,pourSize,pourTemperature
-            00-11-22-33-44,0123456789012345,2014-04-03 12:00:00,1,100,19
-            00-11-22-33-44,0123456789012345,2014-04-03 13:00:00,1,150,20
-            00-11-22-33-44,0123456789012345,2014-04-03 14:00:00,1,200,21
+            00-11-22-33-44-55,0123456789012345,2014-04-03 12:00:00,1,100,19
+            00-11-22-33-44-55,0123456789012345,2014-04-03 13:00:00,1,150,20
+            00-11-22-33-44-55,0123456789012345,2014-04-03 14:00:00,1,200,21
             
             ------------------------------892378f8a959--
 
